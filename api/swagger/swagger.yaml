@@ -1,0 +1,90 @@
+swagger: "2.0"
+info:
+  version: "0.0.1"
+  title: ChallengesAPI
+host: localhost:10010
+basePath: /
+schemes:
+  - http
+  - https
+consumes:
+  - application/json
+produces:
+  - application/json
+paths:
+  /challenges:
+    x-swagger-router-controller: challenges
+    get:
+      description: Return the challenges
+      operationId: challenges
+      responses:
+        "200":
+          description: Success
+          schema:
+            $ref: "#/definitions/ChallengesResponse"
+        default:
+          description: Error
+          schema:
+            $ref: "#/definitions/ErrorResponse"
+  /challenge:
+    x-swagger-router-controller: challenges
+    post:
+      description: Create a new challenge
+      operationId: createChallenge
+      produces: 
+        - application/json
+      parameters:
+        - in: body
+          name: challenge
+          schema:
+            $ref: "#/definitions/Challenge"
+      responses:
+        "200":
+          description: Success
+          schema:
+            properties:
+              id:
+                type: string
+        default:
+          description: Error
+          schema:
+            $ref: "#/definitions/ErrorResponse"
+
+  /swagger:
+    x-swagger-pipe: swagger_raw
+definitions:
+  ChallengesResponse:
+    required:
+      - challenges
+    properties:
+      challenges:
+        type: array
+        items:
+          type: object
+          properties:
+            id:
+              type: string
+            title: 
+              type: string
+            description: 
+              type: string
+            category: 
+              type: string
+  Challenge:
+    required:
+      - title
+      - description
+      - category
+    properties:
+        title:
+          type: string
+        description:
+          type: string
+        category:
+          type: string
+  ErrorResponse:
+    required:
+      - error
+    properties:
+      error:
+        type: string
